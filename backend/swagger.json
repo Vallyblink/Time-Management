@@ -1,0 +1,1685 @@
+{
+    "openapi": "3.0.1",
+    "type": "module",
+    "info": {
+        "version": "2.0",
+        "title": "Project-future777-backend",
+        "description": "Swagger for Project-future777"
+    },
+    "consumes": ["application/json", "multipart/form-data"],
+    "produces": ["application/json", "multipart/form-data"],
+    "servers": [{ "url": "https://project-future777-backend.onrender.com/api" }],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authorization endpoints"
+        },
+        {
+            "name": "Users",
+            "description": "User's endpoints"
+        },
+        {
+            "name": "Boards",
+            "description": "Board's endpoints"
+        },
+        {
+            "name": "Columns",
+            "description": "Column's endpoints"
+        },
+        {
+            "name": "Cards",
+            "description": "Card's endpoints"
+        }
+    ],
+
+    
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "User registration",
+                "description": "The <b>name</b> field can contain from 2 to 32 characters, the <b>password</b> field can contain from 8 to 64 characters (latin alphabet, symbols or numbers)",
+                "parameters": [],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/registrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/registrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (name, email and password are required)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/400Response"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Email in use",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Email in use",
+                                            "example": "Email in use"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "User login",
+                "description": "The <b>name</b> field can contain from 2 to 32 characters, the <b>password</b> field can contain from 8 to 64 characters (latin alphabet, symbols or numbers)",
+                "parameters": [],
+                "requestBody": {
+                    "description": "Login's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/loginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/registrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (email and password are required)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "missing required email or password field",
+                                            "example": "missing required email or password field"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "User logout",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "responses": {
+                    "204": {
+                        "description": "No content (logout success)"
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        },
+        "/users": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Update user info",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Update user info",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/currentUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (name, email and password are required)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/400Response"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/current": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Get info about current user",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/currentUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/theme": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Update theme",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Update user's theme",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateThemeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/currentUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (theme is required)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "theme is required",
+                                            "example": "theme is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/avatar": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Change avatar",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Change user's avatar",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateAvatarRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/updateAvatarResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (avatar is required)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "avatar is required",
+                                            "example": "avatar is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error: response status is 500",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Cannot destructure property 'path' of 'req.file' as it is undefined",
+                                            "example": "Cannot destructure property 'path' of 'req.file' as it is undefined"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/help": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Send feedback",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Send feedback object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/needHelpRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email send success"                    
+                    },
+                    "400": {
+                        "description": "Email and comment are required field",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "missing required comment/ email field",
+                                            "example": "missing required comment/email field"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/boards": {
+            "get": {
+                "tags": ["Boards"],
+                "summary": "Get list of boards",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/getBoardsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Boards"],
+                "summary": "Add board",
+                "parameters": [],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Add board",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/boardAddRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/boardAddResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Title, icon and background are required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "title/icon/background is required",
+                                            "example": "title/icon/background is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/boards/{id}": {
+            "get": {
+                "tags": ["Boards"],
+                "summary": "Get info about board by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Board's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Board's object",
+                    "content": {}
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/getBoardsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Boards"],
+                "summary": "Delete board",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Board's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Boards's object",
+                    "content": {}
+                },
+                "responses": {
+                    "200": {
+                        "description": "Board deleted"
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["Boards"],
+                "summary": "Update board",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Board's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Board's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/boardUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/boardAddResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/boards/{id}/columns": {
+            "post": {
+                "tags": ["Columns"],
+                "summary": "Add column to board",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Board's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Сolumn's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/addColumnRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/addColumnResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Title is required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Title is required",
+                                            "example": "Title is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["Columns"],
+                "summary": "Update column's list - ДОДЕЛАТЬ drag-n-drop",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Board's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Сolumn's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateColumnsListRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/updateColumnsListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Column is required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Column is required",
+                                            "example": "Column is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/columns/{id}": {
+            "delete": {
+                "tags": ["Columns"],
+                "summary": "Delete column from board",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Сolumn's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Column's object",
+                    "content": {}
+                },
+                "responses": {
+                    "200": {
+                        "description": "Column deleted"
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["Columns"],
+                "summary": "Update column",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Сolumn's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Column's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/addColumnRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/addColumnResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Title is required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Title is required",
+                                            "example": "Title is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/columns/{id}/cards": {
+            "post": {
+                "tags": ["Cards"],
+                "summary": "Add card",
+                "description": "Date format in the deadline field: YYYY-MM-DD",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Column's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Card's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/addCardRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/addCardResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Title, description, priority and deadline are required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/400CardResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cards/{id}": {
+            "delete": {
+                "tags": ["Cards"],
+                "summary": "Delete card",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Card's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Card's object",
+                    "content": {}
+                },
+                "responses": {
+                    "200": {
+                        "description": "Card deleted"
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Cards"],
+                "summary": "Update card",
+                "description": "Date format in the deadline field: YYYY-MM-DD.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Card's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Card's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/addCardRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/addCardResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Title, description, priority and deadline are required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/400CardResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["Cards"],
+                "summary": "Move card - ДОДЕЛАТЬ drag-n-drop",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Card's id"
+                    }
+                ],
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Card's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/moveCardRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/moveCardResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "newOwnerId is required",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Not autorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/401Response"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID is not valid / Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/404NotFoundResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+
+    "components": {
+        "schemas": {
+            "registrationRequest": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "User's name (2-32 symbols)"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password (8-64 symbols)",
+                        "example": "qwerty12345"
+                    }
+                }
+            },
+            "registrationResponse": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "User's token"
+                    },
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "User's name"
+                            },
+                            "email": {
+                                "type": "string",
+                                "description": "User's email",
+                                "format": "email"
+                            },
+                            "theme": {
+                                "type": "string",
+                                "description": "User's theme",
+                                "example": "dark"
+                            },
+                            "avatarURL": {
+                                "type": "string",
+                                "description": "User's avatar"
+                            }
+                        }
+                    }
+                }
+            },
+            "loginRequest": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password (8-64 symbols)",
+                        "example": "qwerty12345"
+                    }
+                }
+            },
+            "currentUserResponse": {
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "User's name"
+                            },
+                            "email": {
+                                "type": "string",
+                                "description": "User's email",
+                                "format": "email"
+                            },
+                            "theme": {
+                                "type": "string",
+                                "description": "User's password",
+                                "example": "dark"
+                            },
+                            "avatarURL": {
+                                "type": "string",
+                                "description": "User's avatar"
+                            }
+                        }
+                    }
+                }
+            },
+            "updateThemeRequest": {
+                "type": "object",
+                "required": ["theme"],
+                "properties": {
+                    "theme": {
+                        "type": "string",
+                        "description": "User's theme",
+                        "example": "dark"
+                    }
+                }
+            },
+            "updateAvatarRequest": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "description": "User's avatar"
+                    }
+                }
+            },
+            "updateAvatarResponse": {
+                "type": "object",
+                "properties": {
+                    "avatarURL": {
+                        "type": "string",
+                        "description": "User's avatar URL file"
+                    }
+                }
+            },
+            "needHelpRequest": {
+                "type": "object",
+                "required": ["email", "comment"],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email"
+                    },
+                    "comment": {
+                        "type": "string",
+                        "description": "User's comment"
+                    }
+                }
+            },
+            "updateUserRequest": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "User's name (2-32 symbols)"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password (8-64 symbols)",
+                        "example": "qwerty12345"
+                    }
+                }
+            },
+            "boardAddRequest": {
+                "type": "object",
+                "required": ["title", "icon", "background"],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Board's title"
+                    },
+                    "icon": {
+                        "type": "integer",
+                        "description": "Number of board's icon (0-7)"
+                    },
+                    "background": {
+                        "type": "integer",
+                        "description": "Number of board's background (0-7)"
+                    }
+                }
+            },
+            "boardAddResponse": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Board's title"
+                    },
+                    "icon": {
+                        "type": "integer",
+                        "description": "Board's icon"
+                    },
+                    "background": {
+                        "type": "integer",
+                        "description": "Board's background"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Board's owner id"
+                    },
+                    "_id": {
+                        "type": "string",
+                        "description": "Board's id"
+                    },
+                    "columns": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Board's columns"
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Board creation date"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Board update date"
+                    }
+                }
+            },
+            "getBoardsResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Board's id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Board's title"
+                    },
+                    "icon": {
+                        "type": "integer",
+                        "description": "Board's icon"
+                    },
+                    "background": {
+                        "type": "integer",
+                        "description": "Board's background"
+                    },
+                    "columns": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "columnId": {
+                                    "type": "string",
+                                    "description": "Column's id"
+                                },
+                                "columnTitle": {
+                                    "type": "string",
+                                    "description": "Column's title"
+                                },
+                                "_id": {
+                                    "type": "string",
+                                    "description": "id"
+                                }
+                            }                    
+                        }
+                    }
+                }
+            },
+            "boardUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Board's title"
+                    },
+                    "icon": {
+                        "type": "integer",
+                        "description": "Number of board's icon (0-7)"
+                    },
+                    "background": {
+                        "type": "integer",
+                        "description": "Number of board's background (0-7)"
+                    }
+                }
+            },
+            "addColumnRequest": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Column's title"
+                    }
+                }
+            },
+            "addColumnResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Column's id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Column's title"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Column's owner id"
+                    },
+                    "cards": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Column's cards"
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Column creation date"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Column update date"
+                    }
+                }
+            },
+            "updateColumnsListRequest": {
+                "type": "object",
+                "required": ["columns"],
+                "properties": {
+                    "columns": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Column's list items"
+                        }
+                    }
+                }
+            },
+            "updateColumnsListResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Column's id"
+                    }
+                }
+            },
+            "addCardRequest": {
+                "type": "object",
+                "required": ["title", "description", "priority", "deadline"],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Card's title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Card's description"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "description": "Card's priority (0-3)"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "description": "Card's deadline",
+                        "example": "YYYY-MM-DD"
+                    }
+                }
+            },
+            "addCardResponse": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Card's title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Card's description"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "description": "Card's owner priority"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "description": "Card's deadline"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Card's owner"
+                    },
+                    "_id": {
+                        "type": "string",
+                        "description": "Card's id"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Card creation date"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Card update date"
+                    }
+                }
+            },
+            "401Response": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                    "type": "string",
+                    "description": "Not authorized",
+                    "example": "Not authorized"
+                    }
+                }
+            },
+            "400Response": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "missing required name, email or password field",
+                        "example": "missing required name, email or password field"
+                    }
+                }
+            },
+            "400CardResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "Title/description/priority/deadline is required",
+                        "example": "Title/description/priority/deadline is required"
+                    }
+                }
+            },
+
+            "404NotFoundResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "is not valid id",
+                        "example": "Is not valid id or id not found"
+                    }
+                }
+            },
+            "moveCardRequest": {
+                "type": "object",
+                "required": ["newOwnerId"],
+                "properties": {
+                    "newOwnerId": {
+                        "type": "string",
+                        "description": "New Owner's id"
+                    }
+                }
+            },
+            "moveCardResponse": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Card's title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Card's description"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "description": "Card's owner priority"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "description": "Card's deadline"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Card's owner"
+                    },
+                    "_id": {
+                        "type": "string",
+                        "description": "Card's id"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Card creation date"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Card update date"
+                    }
+                }
+            }
+        },
+
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
